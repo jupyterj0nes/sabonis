@@ -1,2 +1,2 @@
 # sabonis
-Sabonis, a Digital Forensics and Incident Response pivonting tool
+Sabonis, a Digital Forensics and Incident Response pivoting tool
