@@ -18,6 +18,17 @@ USAGE="Usage: pivotfoot source_folder_with_evtx destination_folder"
 
 # --- Option processing -------------------------------------------
 if [ $# -ne 2 ] || [ $1 == "-h" ] || [ $1 == "-help" ] || [ $1 == "--h" ] || [ $1 == "--help" ]; then
+    echo ' _______  _______  ______   _______  _       _________ _______ '
+    echo '(  ____ \(  ___  )(  ___ \ (  ___  )( (    /|\__   __/(  ____ \'
+    echo '| (    \/| (   ) || (   ) )| (   ) ||  \  ( |   ) (   | (    \/'
+    echo '| (_____ | (___) || (__/ / | |   | ||   \ | |   | |   | (_____ '
+    echo '(_____  )|  ___  ||  __ (  | |   | || (\ \) |   | |   (_____  )'
+    echo '      ) || (   ) || (  \ \ | |   | || | \   |   | |         ) |'
+    echo '/\____) || )   ( || )___) )| (___) || )  \  |___) (___/\____) |'
+    echo '\_______)|/     \||/ \___/ (_______)|/    )_)\_______/\_______)'
+    echo ''
+    echo 'By: Toño Díaz  (@jupyterj1s)'
+    echo ''
     echo $USAGE
     exit 1;
 fi
@@ -37,8 +48,19 @@ touch $LOCK_FILE
 
 source_folder=$1
 dest_folder=$2
-
+echo ' _______  _______  ______   _______  _       _________ _______ '
+echo '(  ____ \(  ___  )(  ___ \ (  ___  )( (    /|\__   __/(  ____ \'
+echo '| (    \/| (   ) || (   ) )| (   ) ||  \  ( |   ) (   | (    \/'
+echo '| (_____ | (___) || (__/ / | |   | ||   \ | |   | |   | (_____ '
+echo '(_____  )|  ___  ||  __ (  | |   | || (\ \) |   | |   (_____  )'
+echo '      ) || (   ) || (  \ \ | |   | || | \   |   | |         ) |'
+echo '/\____) || )   ( || )___) )| (___) || )  \  |___) (___/\____) |'
+echo '\_______)|/     \||/ \___/ (_______)|/    )_)\_______/\_______)'
+echo ''
+echo 'By: Toño Díaz  (@jupyterj1s)'
+echo ''
 echo "  + EXECUTING SABONIS. LET'S FORENSICATE!..."
+echo ''
 rm ${dest_folder}/*.xml
 [ -f "${source_folder}/Security.evtx" ] && bin/evtx_dump "${source_folder}/Security.evtx" -f "${dest_folder}/Security.evtx.xml" --dont-show-record-number --no-indent
 [ -f "${source_folder}/Microsoft-Windows-SMBServer%4Security.evtx" ] && bin/evtx_dump "${source_folder}/Microsoft-Windows-SMBServer%4Security.evtx" -f "${dest_folder}/Microsoft-Windows-SMBServer%4Security.evtx.xml" --dont-show-record-number --no-indent
@@ -49,6 +71,8 @@ rm ${dest_folder}/*.xml
 [ -f "${source_folder}/Microsoft-Windows-SmbClient%4Security.evtx" ] && bin/evtx_dump "${source_folder}/Microsoft-Windows-SmbClient%4Security.evtx" -f "${dest_folder}/Microsoft-Windows-SmbClient%4Security.evtx.xml" --dont-show-record-number --no-indent
 sed -i 's+<?xml version="1.0" encoding="utf-8"?>++' ${dest_folder}/*.xml
 sed -i '1s;^;<?xml version="1.0" encoding="utf-8"?><Events>;' ${dest_folder}/*.xml
-echo -e "</Events>"  | tee -a ${dest_folder}/*.xml
+echo "</Events>" | tee -a ${dest_folder}/*.xml
+
+
 
 # ----------------------------------------------------------
