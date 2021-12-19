@@ -501,14 +501,10 @@ class EvtxLoader:
         df = pandas.read_csv(self.csv_input)
         for index, row in df.iterrows():
             if row['source_ip']:
-                print(row['remote_user'])
-                print(row['remote_user'].replace('.','_'))
-                print(row['time'])
-                print(row['time'].replace(' ','T'))
                 transaction.evaluate(f'''
                 MERGE (origin:host{{name:'{row['source_ip']}'}})
                 MERGE (destination:host{{name:'{row['hostname']}'}})
-                MERGE (origin)-[r:{row['remote_user'].replace('.','_').replace('-','_')}{{time:datetime("{row['time'].replace(' ','T')}"), user:'{row['remote_user']}', logon_type:'{row['logon_type']}', source_hostname:'{row['source_hostname']}', remote_domain:'{row['remote_domain']}'}}]->(destination)
+                MERGE (origin)-[r:{row['remote_user'].replace('.','_').replace('-','_').replace(' ','_').split("@")[0]}{{time:datetime("{row['time'].replace(' utc','').replace(' ','T')}"), user:'{row['remote_user'].replace('.','_').replace('-','_').replace(' ','_').split("@")[0]}', logon_type:'{row['logon_type']}', source_hostname:'{row['source_hostname']}', remote_domain:'{row['remote_domain']}'}}]->(destination)
                 ''')
 
         transaction.commit()
