@@ -276,7 +276,7 @@ class EvtxParser:
                         capture=True
                         source_ip=""
                         source_hostname=""
-                        logon_type="3"
+                        logon_type="10"
                         remote_user=""
                         remote_domain=""
                         user=""
