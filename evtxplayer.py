@@ -89,6 +89,7 @@ class EvtxParser:
             print()
         self.df=df
 
+
     def parseSecurity(self):
         print("  - EVTX SABONIS: Started Security.evtx XML to dataframe conversion")
         if not self.directory:
@@ -102,11 +103,13 @@ class EvtxParser:
             for event, elem in tqdm(ET.iterparse(security_log, events=("start","end"))):
                 if elem.tag.endswith("}Event") and event=="end":
                     if capture:
+                        if source_ip in ("","-") and source_hostname not in ("","-"):
+                            source_ip=str(source_hostname)
                         event_list.append((f"{timecreated},{event_id},{computername},{user},{source_ip},{source_hostname},{logon_type},{remote_user},{remote_domain},Security.evtx"))
                         capture=False
                     elem.clear()
 
-                interesting_eventids = ["4624", "4625","4648","4778","4647","4634","4779"]
+                interesting_eventids = ["4624","4625","4648","4778","4647","4634","4779"]
 
                 if elem.tag.endswith("EventID") and event=="start" and elem.text in interesting_eventids:
                     capture=True
@@ -146,7 +149,7 @@ class EvtxParser:
         except Exception:
             pass
 
-        df = pandas.DataFrame([sub.split(",") for sub in event_list],columns =['time', 'event_id','hostname','user','source_ip','source_hostname','logon_type','remote_user','remote_domain','source_artifact'])
+        df = pandas.DataFrame([sub.split(",") for sub in event_list],columns =['time', 'event_id','hostname','user','source_ip','source_hostname','logon_type','remote_user','remote_domain','source_art>
         df = df.sort_values('time')
         df = df.apply(lambda x: x.astype(str).str.lower())
         print("  - EVTX PROCESSHUNTER: Finished Security.evtx XML to dataframe parsing")
