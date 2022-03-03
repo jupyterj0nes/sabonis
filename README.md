@@ -4,7 +4,7 @@
    Sabonis, a Digital Forensics and Incident Response pivoting tool
   </h1>
  </p>
-<img style="padding:0;vertical-align:bottom;" height="76" width="300" src="sabonis.jpg"/>
+<img style="padding:0;vertical-align:bottom;" height="626" width="417" src="sabonis.jpg"/>
 </div>
 
 ---
