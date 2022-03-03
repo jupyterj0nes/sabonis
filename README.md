@@ -4,7 +4,7 @@
    Sabonis, a Digital Forensics and Incident Response pivoting tool
   </h1>
  </p>
-<img style="padding:0;vertical-align:bottom;" height="76" width="300" src="sabonis.png"/>
+<img style="padding:0;vertical-align:bottom;" height="76" width="300" src="sabonis.jpg"/>
 </div>
 
 ---
@@ -24,38 +24,63 @@ It also has the ability of loading all this information into a Neo4J database. T
 
 ## Getting Started
 ---
-You can find pre-compiled versions of chainsaw in the releases section of this Github repo, or you can clone the repo (and the submodules) by running:
- `git clone --recurse-submodules https://github.com/countercept/chainsaw.git`
+Make sure that you have evtx_dump binary in src folder
 
-You can then compile the code yourself by running:  `cargo build --release`. Once the build has finished, you will find a copy of the compiled binary in the target/release folder.
+## Help
 
-**Make sure to build with the `--release` flag as this will ensure significantly faster execution time.**
-
-If you want to quickly see what Chainsaw looks like when it runs, you can use the command:
 ```
-./chainsaw hunt evtx_attack_samples/ --rules sigma_rules/ --mapping mapping_files/sigma-mapping.yml
-```
+usage: sabonis.py [-h] [--version] [--source_artifact SOURCE_ARTIFACT] [--csv_output CSV_OUTPUT] [--csv_input CSV_INPUT] [--ne04j_url NE04J_URL]
+                  [--ne04j_user NE04J_USER] [--only_first] [--ignore_local] [--stats] [--directory] [--exclusionlist EXCLUSIONLIST] [--focuslist FOCUSLIST]
+                  [--timezone TIMEZONE]
+                  {parse,load2neo} {pcap,proxy,evtx,freestyle}
 
-## Supporting Additional Event IDs (via Mapping Files)
-When using Sigma rule detection logic, Chainsaw requires a 'mapping file' to tell it which event IDs to check, what fields are important, and which fields to output in the table view. The included sigma mapping in the "mapping_files" directory already supports most of the key Event IDs, but if you want to add support for additional event IDs you can use this mapping file as a template.
+parse forensics artifacts to CSV and load them into neo4j database
+
+positional arguments:
+  {parse,load2neo}      choose the action to perform
+  {pcap,proxy,evtx,freestyle}
+                        type of artifact
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  --source_artifact SOURCE_ARTIFACT
+                        forensic artifact file
+  --csv_output CSV_OUTPUT
+                        Resulting CSV ready to be loaded
+  --csv_input CSV_INPUT
+                        Processed CSV to be loaded into Neo4j instance
+  --ne04j_url NE04J_URL
+                        Ne04j database URL in bolt format
+  --ne04j_user NE04J_USER
+                        Ne04j database user. Pass will be prompted
+  --only_first          Just parse first connections of the group source_IP, user, dest_IP
+  --ignore_local        Just include remote logins
+  --stats               Display stats of processed evidence
+  --directory           Parses a whole winevt/Logs directory and merges results
+  --exclusionlist EXCLUSIONLIST
+                        Excludes all the evidence logs or packets that contain strings included in this wordlist
+  --focuslist FOCUSLIST
+                        Parser will ONLY process the evidence logs or packets that contain strings included in this wordlist
+  --timezone TIMEZONE   All dates with be converted to specified timezone. Ex: Europe/Leon
+
+```
 
 ## Examples
 ---
-### Searching
+### Parsing
+
+   * Parse all EVTX files before processing with Sabonis*
+
+    ./pivotfoot.sh source_folder_with_evtx destination_folder
+
+
 
 #### Command Examples
 
-   *Search all .evtx files in the evtx_files dir for event id 4624*
+   * Process all evtx files in a directory*
 
-    ./chainsaw search ~/Downloads/evtx_files/ -e 4624
-
-   *Search a specific evtx log for logon events containing the string "bob" (case insensitive)*
-
-    ./chainsaw search ~/Downloads/evtx_files/security.evtx -e 4624 -s "bob" -i
-
-   *Search a specific evtx log for logon events, with a matching regex pattern, output in JSON format*
-
-     ./chainsaw search ~/Downloads/evtx_files/security.evtx -e 4624 -r "bob[a-zA-Z]" --json
+    ./sabonis.py parse evtx --source artifact folder_with_evtx_files --directory --csv_output sabonis_output.csv --ignore_local
 
 
 
