@@ -8,8 +8,8 @@
 </div>
 
 ---
-Sabonis proves a way of quicly parse EVTX, proxy and PCAP files and extracting just the information related to lateral movements.
-It also has the ability of loading all this information into a Neo4J database. This not only provides a graphic and easy-going way of investigating an incident, but also allows incidents handles to make use of the powerful graph database language "Cypher"
+Sabonis provides a way of quicly parsing EVTX, proxy and PCAP files and extracting just the information related to lateral movements.
+It also has the ability of loading all this information into a Neo4J database. This not only provides a graphic and easy-going way of investigating an incident, but also allows incident handlers to make use of the powerful graph database language "Cypher"
 
 ## Features
 ---
@@ -17,7 +17,7 @@ It also has the ability of loading all this information into a Neo4J database. T
  - :mag: Extracts and merge lateral movements from more than 7 different EVTX files
  - :mag: Parses Squid proxy events
  - :mag: Extracts all lateral movements from PCAP files
- - :zap: Quick and low memory compuption
+ - :zap: Quick and low memory comsumption
  - :bookmark_tabs: Loads different sources into a Neo4J database 
  - :mag: Includes a Cypher Playbook to make investigations easy
 
