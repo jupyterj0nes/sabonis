@@ -7,7 +7,6 @@ import numpy as np
 import os
 from py2neo import Graph, Node, Relationship
 import webbrowser
-from bs4 import BeautifulSoup, element
 import Evtx.Evtx as evtx
 import lxml
 from tqdm import tqdm
@@ -89,7 +88,6 @@ class EvtxParser:
             print()
         self.df=df
 
-
     def parseSecurity(self):
         print("  - EVTX SABONIS: Started Security.evtx XML to dataframe conversion")
         if not self.directory:
@@ -109,7 +107,7 @@ class EvtxParser:
                         capture=False
                     elem.clear()
 
-                interesting_eventids = ["4624","4625","4648","4778","4647","4634","4779"]
+                interesting_eventids = ["4624","4625","4648","4778","4647","4634","4779","4776"]
 
                 if elem.tag.endswith("EventID") and event=="start" and elem.text in interesting_eventids:
                     capture=True
@@ -138,6 +136,9 @@ class EvtxParser:
                 if elem.tag.endswith("}Data") and "Name" in elem.attrib and elem.attrib["Name"]=="WorkstationName" and capture:
                     source_hostname=elem.text
 
+                if elem.tag.endswith("}Data") and "Name" in elem.attrib and elem.attrib["Name"]=="Workstation" and capture:
+                    source_hostname=elem.text
+
                 if elem.tag.endswith("}Data") and "Name" in elem.attrib and elem.attrib["Name"]=="LogonType" and capture:
                     logon_type=elem.text
 
@@ -149,7 +150,7 @@ class EvtxParser:
         except Exception:
             pass
 
-        df = pandas.DataFrame([sub.split(",") for sub in event_list],columns =['time', 'event_id','hostname','user','source_ip','source_hostname','logon_type','remote_user','remote_domain','source_art>
+        df = pandas.DataFrame([sub.split(",") for sub in event_list],columns =['time', 'event_id','hostname','user','source_ip','source_hostname','logon_type','remote_user','remote_domain','source_artifact'])
         df = df.sort_values('time')
         df = df.apply(lambda x: x.astype(str).str.lower())
         print("  - EVTX PROCESSHUNTER: Finished Security.evtx XML to dataframe parsing")
@@ -470,23 +471,7 @@ class EvtxParser:
             df = df.sort_values('time')
             df = df.apply(lambda x: x.astype(str).str.lower())
             print("  - EVTX SABONIS: Finished Microsoft-Windows-RemoteDesktopServices-RdpCoreTS%4Operational.evtx XML to dataframe conversion")
-
-
-
         return df
-
-    def getSoup(self, security_log):
-        xml = "<Events>"
-        with evtx.Evtx(security_log) as log:
-            for record in log.records():
-                try:
-                    xml += record.xml()
-                except (UnicodeDecodeError, ParseException) as e:
-                    print(f"Malformed log: {record} not included")
-        xml += "</Events>"
-        soup = BeautifulSoup(xml,'xml')
-        events = soup.findAll('Event')
-        return events
 
     def write(self,filepath):
         self.df.to_csv(filepath, index = False, header=True)
