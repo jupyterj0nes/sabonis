@@ -26,6 +26,8 @@ It also has the ability of loading all this information into a Neo4J database. T
 ---
 Make sure that you have evtx_dump binary in src folder
 
+Note: Before running sabonis.py, you must first generate the parsed XML files with pivotfoot.sh
+
 ## Help
 
 ```
@@ -70,7 +72,7 @@ optional arguments:
 ---
 ### Parsing
 
-   * Parse all EVTX files before processing with Sabonis*
+   * Parse all EVTX files before processing with Sabonis
 
     ./pivotfoot.sh source_folder_with_evtx destination_folder
 
@@ -78,7 +80,7 @@ optional arguments:
 
 #### Command Examples
 
-   * Process all evtx files in a directory*
+   * Process all evtx files in a directory
 
     ./sabonis.py parse evtx --source artifact folder_with_pivotfoot_output --directory --csv_output sabonis_output.csv --ignore_local
 
