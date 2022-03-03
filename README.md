@@ -80,7 +80,7 @@ optional arguments:
 
    * Process all evtx files in a directory*
 
-    ./sabonis.py parse evtx --source artifact folder_with_evtx_files --directory --csv_output sabonis_output.csv --ignore_local
+    ./sabonis.py parse evtx --source artifact folder_with_pivotfoot_output --directory --csv_output sabonis_output.csv --ignore_local
 
 
 
