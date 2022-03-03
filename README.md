@@ -8,7 +8,7 @@
 </div>
 
 ---
-Sabonis provides a way of quicly parsing EVTX, proxy and PCAP files and extracting just the information related to lateral movements.
+Sabonis provides a way of quickly parsing EVTX, proxy and PCAP files and extracting just the information related to lateral movements.
 It also has the ability of loading all this information into a Neo4J database. This not only provides a graphic and easy-going way of investigating an incident, but also allows incident handlers to make use of the powerful graph database language "Cypher"
 
 ## Features
@@ -78,12 +78,17 @@ optional arguments:
 
 
 
-#### Command Examples
+### Get CSVs with lateral movements
 
    * Process all evtx files in a directory
 
     ./sabonis.py parse evtx --source artifact folder_with_pivotfoot_output --directory --csv_output sabonis_output.csv --ignore_local
 
+### Loading into Neo4J
+
+   * Load sabonis_output into neo4j database
+
+    ./sabonis.py load evtx --csc_input sabonis_output.csv -ne04j_url NE04J_URL --ne04j_user NE04J_USER
 
 
 ### Acknowledgements
