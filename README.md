@@ -88,7 +88,7 @@ optional arguments:
 
    * Load sabonis_output into neo4j database
 
-    ./sabonis.py load evtx --csc_input sabonis_output.csv -ne04j_url NE04J_URL --ne04j_user NE04J_USER
+    ./sabonis.py load evtx --csv_input sabonis_output.csv -ne04j_url NE04J_URL --ne04j_user NE04J_USER
 
 
 ### Acknowledgements
